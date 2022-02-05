@@ -4,7 +4,6 @@
 
 //TODO add names to top of every file
 
-
 package app.songlib;
 
 import javafx.application.Application;
@@ -13,15 +12,12 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import java.io.IOException;
 
-
-
-
 public class SongLib extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(SongLib.class.getResource("songlib.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 320, 240);
-        stage.setTitle("Apple");
+        stage.setTitle("Hello");
         stage.setScene(scene);
         stage.show();
     }
