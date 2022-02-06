@@ -16,7 +16,7 @@
 <?import javafx.scene.layout.VBox?>
 
 <?import javafx.scene.control.Button?>
-<VBox prefHeight="400.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
+<VBox prefHeight="400.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.songlib.SongLibController">
 <children>
     <MenuBar VBox.vgrow="NEVER">
         <menus>
@@ -59,13 +59,13 @@
     </MenuBar>
     <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
         <children>
-            <Button id="addButton" layoutX="326.0" layoutY="28.0" mnemonicParsing="false" text="Add" />
-            <Button id="deleteButton" layoutX="433.0" layoutY="28.0" mnemonicParsing="false" text="Delete" />
-            <Button id="editButton" layoutX="538.0" layoutY="28.0" mnemonicParsing="false" text="Edit" />
+            <Button id="addButton" layoutX="326.0" layoutY="28.0" mnemonicParsing="false" text="Add" onAction="#onAddButtonClick"/>
+            <Button id="deleteButton" layoutX="433.0" layoutY="28.0" mnemonicParsing="false" text="Delete" onAction="#onDeleteButtonClick"/>
+            <Button id="editButton" layoutX="538.0" layoutY="28.0" mnemonicParsing="false" text="Edit" onAction="#onEditButtonClick"/>
 <!--            <MediaView fitHeight="200.0" fitWidth="200.0" layoutX="28.0" layoutY="40.0" />-->
             <ListView id="list" editable="true" layoutX="55.0" layoutY="77.0" prefHeight="200.0" prefWidth="200.0" />
-            <Pane id="songDetails" layoutX="360.0" layoutY="111.0" prefHeight="200.0" prefWidth="200.0" />
-            <Label layoutX="98.0" layoutY="23.0" text="Song List">
+            <Pane fx:id="songDetails" layoutX="360.0" layoutY="111.0" prefHeight="200.0" prefWidth="200.0" />
+            <Label fx:id="songListLabel" layoutX="98.0" layoutY="23.0" text="Song List">
                 <font>
                     <Font size="29.0" />
                 </font>

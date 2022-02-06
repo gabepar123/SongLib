@@ -17,7 +17,7 @@ public class SongLib extends Application {
     public void start(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(SongLib.class.getResource("songlib.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 700, 400);
-        stage.setTitle("Hello");
+        stage.setTitle("Song Library App");
         stage.setScene(scene);
         stage.show();
     }
