@@ -1,7 +1,10 @@
+//Gabriel Parente
+//Mohammed Smires
+
 package app.songlib;
 
 //TODO check how this reacts to empty strings and how JavaFX takes integers for the year
-public class Song {
+public class Song implements Comparable<Song>{
 
     public String name;
     public String artist;
@@ -27,4 +30,19 @@ public class Song {
         this.album = album.strip();
         this.year = year;
     }
+
+    @Override
+    public int compareTo(Song s) {
+        if (this.name.compareTo(s.name) != 0)
+            return this.name.compareTo(s.name);
+        return this.artist.compareTo(s.artist);
+    }
+
+    @Override
+    public String toString() {
+        return name + ", By: " + artist;
+    }
+
+
+
 }
