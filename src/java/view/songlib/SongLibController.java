@@ -80,7 +80,16 @@ public class SongLibController {
     @FXML
     protected void onEditButtonClick(ActionEvent event){ //TODO: edit song in library
         System.out.println("Edit Button was clicked!");
+
+        s.name = songNameTF.getText();
+        s.artist = artistNameTF.getText();
+        selectedSong.setText(s.name);
+        selectedArtist.setText(s.artist);
+
+        updateSongList();
     }
+
+
     @FXML
     protected void onSongListViewClick(MouseEvent event){
         s = songListView.getSelectionModel().getSelectedItem();
