@@ -8,30 +8,38 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
-<?import javafx.scene.text.Text?>
 
-<VBox prefHeight="400.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="view.songlib.SongLibController">
+<VBox prefHeight="400.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.songlib.SongLibController">
     <AnchorPane VBox.vgrow="ALWAYS">
-        <Button id="addButton" layoutX="326.0" layoutY="28.0" mnemonicParsing="false" onAction="#onAddButtonClick"
-                text="Add"/>
-        <Button id="deleteButton" layoutX="433.0" layoutY="28.0" mnemonicParsing="false"
-                onAction="#onDeleteButtonClick" text="Delete"/>
-        <Button id="editButton" layoutX="538.0" layoutY="28.0" mnemonicParsing="false" onAction="#onEditButtonClick"
-                text="Edit"/>
+        <Button id="addButton" layoutX="326.0" layoutY="28.0" mnemonicParsing="false" onAction="#onAddButtonClick" text="Add" />
+        <Button id="deleteButton" layoutX="433.0" layoutY="28.0" mnemonicParsing="false" onAction="#onDeleteButtonClick" text="Delete" />
+        <Button id="editButton" layoutX="538.0" layoutY="28.0" mnemonicParsing="false" onAction="#onEditButtonClick" text="Edit" />
         <!--            <MediaView fitHeight="200.0" fitWidth="200.0" layoutX="28.0" layoutY="40.0" />-->
-        <ListView id="list" fx:id="songListView" editable="true" layoutX="55.0" layoutY="77.0" prefHeight="200.0"
-                  prefWidth="200.0"/>
-        <Pane fx:id="songDetails" layoutX="345.0" layoutY="142.0" prefHeight="200.0" prefWidth="200.0"/>
+        <ListView id="list" fx:id="songListView" editable="true" layoutX="55.0" layoutY="77.0" onMouseClicked="#onSongListViewClick" prefHeight="200.0" prefWidth="200.0" />
+        <Pane layoutX="345.0" layoutY="141.0" prefHeight="200.0" prefWidth="200.0">
+         <children>
+            <Label layoutX="43.0" layoutY="14.0" text="Selected Song">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            <Label layoutX="25.0" layoutY="40.0" text="Song:" />
+            <Label layoutX="24.0" layoutY="69.0" text="Artist:" />
+            <Label layoutX="21.0" layoutY="100.0" text="Album:" />
+            <Label layoutX="27.0" layoutY="133.0" text="Year:" />
+            <Label fx:id="selectedSong" layoutX="100.0" layoutY="40.0" />
+            <Label fx:id="selectedArtist" layoutX="100.0" layoutY="69.0" />
+            <Label fx:id="selectedAlbum" layoutX="100.0" layoutY="100.0" />
+            <Label fx:id="selectedYear" layoutX="100.0" layoutY="133.0" />
+         </children></Pane>
         <Label fx:id="songListLabel" layoutX="98.0" layoutY="23.0" text="Song List">
             <font>
-                <Font size="29.0"/>
+                <Font size="29.0" />
             </font>
         </Label>
-        <TextField fx:id="songNameTF" layoutX="277.0" layoutY="77.0" prefHeight="25.0" prefWidth="149.0"
-                   promptText="Sunflower"/>
-        <TextField fx:id="artistNameTF" layoutX="445.0" layoutY="77.0" promptText="Post Malone"/>
-        <Text layoutX="277.0" layoutY="71.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Song Name"/>
-        <Text layoutX="445.0" layoutY="71.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Artist name"/>
+        <TextField fx:id="songNameTF" layoutX="277.0" layoutY="77.0" prefHeight="25.0" prefWidth="149.0" promptText="Sunflower" />
+        <TextField fx:id="artistNameTF" layoutX="445.0" layoutY="77.0" promptText="Post Malone" />
+      <Label layoutX="277.0" layoutY="58.0" text="Song Name" />
+      <Label layoutX="445.0" layoutY="58.0" text="Artist" />
     </AnchorPane>
 </VBox>
