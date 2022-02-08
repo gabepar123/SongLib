@@ -31,6 +31,13 @@ public class SongLibController {
     @FXML private TextField songNameTF;
 
     @FXML private TextField artistNameTF;
+
+    @FXML
+    private TextField albumNameTF;
+
+    @FXML
+    private TextField yearNameTF;
+
     //todo gonna rename these to selectedAlbumLabel for clarity probably
     @FXML private Label selectedAlbum;
 
@@ -62,6 +69,7 @@ public class SongLibController {
     }
 
     //todo Add confirmation message
+    //todo check for duplicate names
     @FXML
     protected void onAddButtonClick(ActionEvent event) { //TODO: add song to library
         String songName = songNameTF.getText();
@@ -120,16 +128,37 @@ public class SongLibController {
 
     }
 
+    //check for duplicate names
     @FXML
     protected void onEditButtonClick(ActionEvent event){ //TODO: edit song in library
         System.out.println("Edit Button was clicked!");
 
-        currSong.name = songNameTF.getText();
-        currSong.artist = artistNameTF.getText();
-        selectedSong.setText(currSong.name);
-        selectedArtist.setText(currSong.artist); //todo set year and album
+        String songName = songNameTF.getText();
+        String artistName = artistNameTF.getText();
+        String albumName = albumNameTF.getText();
+        String yearString = yearNameTF.getText();
 
-        updateSongList();
+        Song s;
+        try { //todo probably just make one constructor call tbh
+            if (albumName.length() == 0 || yearString.length() == 0) {
+                s = new Song(songName, artistName);
+            }
+            else {
+                int year = Integer.parseInt(yearString);
+                s = new Song(songName, artistName, albumName, year);
+            }
+
+            songList.remove(currSong);
+            songList.add(s);
+            songListView.getSelectionModel().select(s);
+            currSong = s;
+
+            updateSongList();
+        } catch (IllegalArgumentException e) {
+            System.out.println("Bad Input!");
+            //todo turn this into error popup
+        }
+
     }
 
     private void showSelectedItem(Stage stage){

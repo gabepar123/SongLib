@@ -37,8 +37,12 @@
          </font>
       </Label>
       <TextField fx:id="songNameTF" layoutX="277.0" layoutY="77.0" prefHeight="25.0" prefWidth="149.0" promptText="Sunflower" />
-      <TextField fx:id="artistNameTF" layoutX="445.0" layoutY="77.0" promptText="Post Malone" />
       <Label layoutX="277.0" layoutY="58.0" text="Song Name" />
       <Label layoutX="445.0" layoutY="58.0" text="Artist" />
+      <TextField fx:id="albumNameTF" layoutX="277.0" layoutY="124.0" prefHeight="25.0" prefWidth="149.0" />
+      <TextField fx:id="yearNameTF" layoutX="445.0" layoutY="124.0" prefHeight="25.0" prefWidth="149.0" />
+      <TextField fx:id="artistNameTF" layoutX="445.0" layoutY="77.0" prefHeight="26.0" prefWidth="149.0" promptText="Post Malone" />
+      <Label layoutX="277.0" layoutY="107.0" text="Album Name" />
+      <Label layoutX="450.0" layoutY="107.0" text="Year" />
    </children>
 </AnchorPane>
