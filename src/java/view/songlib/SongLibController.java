@@ -37,6 +37,7 @@ public class SongLibController {
 
     @FXML private Label selectedYear;
 
+    Song s; // made global to support removal
 
 
 
@@ -66,15 +67,32 @@ public class SongLibController {
     @FXML
     protected void onDeleteButtonClick(ActionEvent event){ //TODO: delete song from library
         System.out.println("Delete Button was clicked!");
+
+        songList.remove(s); //remove the song from the list
+        updateSongList(); //update the listView
+
+        //clear the labels for the selected song
+        selectedSong.setText("");
+        selectedArtist.setText("");
+
     }
 
     @FXML
     protected void onEditButtonClick(ActionEvent event){ //TODO: edit song in library
         System.out.println("Edit Button was clicked!");
+
+        s.name = songNameTF.getText();
+        s.artist = artistNameTF.getText();
+        selectedSong.setText(s.name);
+        selectedArtist.setText(s.artist);
+
+        updateSongList();
     }
+
+
     @FXML
     protected void onSongListViewClick(MouseEvent event){
-        Song s = songListView.getSelectionModel().getSelectedItem();
+        s = songListView.getSelectionModel().getSelectedItem();
         if (s == null) return; //if there is no songs in the list
         selectedSong.setText(s.name);
         selectedArtist.setText(s.artist);
