@@ -15,6 +15,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.Stage;
 
 import java.util.*;
 
@@ -22,6 +23,8 @@ public class SongLibController {
     @FXML Label songListLabel;
 
     List<Song> songList = new ArrayList<>();
+
+    ObservableList<Song> obsSongList;
 
     @FXML private ListView<Song> songListView;
 
@@ -39,7 +42,24 @@ public class SongLibController {
 
     Song currSong; // made global to support removal
 
+    public void start(Stage stage){
+        // TODO load songList from file here
+        obsSongList = FXCollections.observableArrayList(songList);
+        songListView.setItems(obsSongList);
 
+        if (!songList.isEmpty()){
+            songListView.getSelectionModel().select(0);
+        }
+
+        songListView
+                .getSelectionModel()
+                .selectedIndexProperty()
+                .addListener(
+                        (obs, oldVal, newVal) ->
+                                showSelectedItem(stage)
+                );
+
+    }
 
     //todo Add confirmation message
     @FXML
@@ -52,6 +72,9 @@ public class SongLibController {
         try {
             Song s = new Song(songName, artistName);
             songList.add(s);
+            //select new song
+            songListView.getSelectionModel().select(s);
+            currSong = s;
 
             updateSongList();
 
@@ -68,12 +91,32 @@ public class SongLibController {
     protected void onDeleteButtonClick(ActionEvent event){ //TODO: delete song from library
         System.out.println("Delete Button was clicked!");
         //TODO: add error pop up if we try to delete a song when there are none?
-        songList.remove(currSong); //remove the song from the list
-        updateSongList(); //update the listView
 
-        //clear the labels for the selected song
+        int currSongIndex = songListView.getSelectionModel().getSelectedIndex();
+
+        songList.remove(currSong); //remove the song from the list
+        //clear text
         selectedSong.setText("");
         selectedArtist.setText("");
+        selectedAlbum.setText("");
+        selectedYear.setText("");
+
+        //update the listView
+        updateSongList();
+
+        //todo clean this up maybe?
+        //selects the next song after deleting
+        if (currSongIndex >= songList.size()){
+            currSongIndex--;
+        }
+        if (currSongIndex >= 0){
+            songListView.getSelectionModel().select(currSongIndex);
+            currSong = songListView.getSelectionModel().getSelectedItem();
+        }
+        else
+            currSong = null; //empty list
+
+
 
     }
 
@@ -84,27 +127,27 @@ public class SongLibController {
         currSong.name = songNameTF.getText();
         currSong.artist = artistNameTF.getText();
         selectedSong.setText(currSong.name);
-        selectedArtist.setText(currSong.artist);
+        selectedArtist.setText(currSong.artist); //todo set year and album
 
         updateSongList();
     }
 
-
-    @FXML
-    protected void onSongListViewClick(MouseEvent event){
+    private void showSelectedItem(Stage stage){
+        System.out.println("here");
         currSong = songListView.getSelectionModel().getSelectedItem();
         if (currSong == null) return; //if there is no songs in the list
         selectedSong.setText(currSong.name);
         selectedArtist.setText(currSong.artist);
-        //selectedAlbum.setText(currSong.album);
+        //selectedAlbum.setText(currSong.album); //todo set year and album
         //selectedYear.setText(String.valueOf(currSong.year));
 
     }
+
     //call this after adding or removing a song from songList
     private void updateSongList(){
         Collections.sort(songList);
-        ObservableList<Song> obSongList = FXCollections.observableList(songList);
-        songListView.setItems(obSongList);
+        obsSongList = FXCollections.observableArrayList(songList);
+        songListView.setItems(obsSongList);
 
     }
 
