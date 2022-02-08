@@ -1,5 +1,5 @@
 //Gabriel Parente
-//Mohammed Smires
+//Mohamed Smires
 
 
 package view.songlib;
