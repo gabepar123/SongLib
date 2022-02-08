@@ -28,7 +28,7 @@ public class SongLibController {
     @FXML private TextField songNameTF;
 
     @FXML private TextField artistNameTF;
-
+    //todo gonna rename these to selectedAlbumLabel for clarity probably
     @FXML private Label selectedAlbum;
 
     @FXML private Label selectedArtist;
@@ -37,7 +37,7 @@ public class SongLibController {
 
     @FXML private Label selectedYear;
 
-    Song s; // made global to support removal
+    Song currSong; // made global to support removal
 
 
 
@@ -67,8 +67,8 @@ public class SongLibController {
     @FXML
     protected void onDeleteButtonClick(ActionEvent event){ //TODO: delete song from library
         System.out.println("Delete Button was clicked!");
-
-        songList.remove(s); //remove the song from the list
+        //TODO: add error pop up if we try to delete a song when there are none?
+        songList.remove(currSong); //remove the song from the list
         updateSongList(); //update the listView
 
         //clear the labels for the selected song
@@ -81,10 +81,10 @@ public class SongLibController {
     protected void onEditButtonClick(ActionEvent event){ //TODO: edit song in library
         System.out.println("Edit Button was clicked!");
 
-        s.name = songNameTF.getText();
-        s.artist = artistNameTF.getText();
-        selectedSong.setText(s.name);
-        selectedArtist.setText(s.artist);
+        currSong.name = songNameTF.getText();
+        currSong.artist = artistNameTF.getText();
+        selectedSong.setText(currSong.name);
+        selectedArtist.setText(currSong.artist);
 
         updateSongList();
     }
@@ -92,12 +92,12 @@ public class SongLibController {
 
     @FXML
     protected void onSongListViewClick(MouseEvent event){
-        s = songListView.getSelectionModel().getSelectedItem();
-        if (s == null) return; //if there is no songs in the list
-        selectedSong.setText(s.name);
-        selectedArtist.setText(s.artist);
-        //selectedAlbum.setText(s.album);
-        //selectedYear.setText(String.valueOf(s.year));
+        currSong = songListView.getSelectionModel().getSelectedItem();
+        if (currSong == null) return; //if there is no songs in the list
+        selectedSong.setText(currSong.name);
+        selectedArtist.setText(currSong.artist);
+        //selectedAlbum.setText(currSong.album);
+        //selectedYear.setText(String.valueOf(currSong.year));
 
     }
     //call this after adding or removing a song from songList
