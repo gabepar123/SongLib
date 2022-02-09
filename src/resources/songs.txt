@@ -1,0 +1,2 @@
+Hello|Adele|null|0
+Travesuras|someone|null|0
