@@ -38,6 +38,8 @@ public class Song implements Comparable<Song>{
         return this.artist.compareTo(s.artist);
     }
 
+    //FIXME: change format to make loading from file work, possibly "name|artist|album|
+    // Or possibly another different toString if this can't be changed
     @Override
     public String toString() {
         return name + ", By: " + artist;
