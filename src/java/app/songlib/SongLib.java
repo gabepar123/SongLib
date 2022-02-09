@@ -20,7 +20,6 @@ import java.util.List;
 
 public class SongLib extends Application {
 
-
     SongLibController controller;
 
     @Override
@@ -41,29 +40,23 @@ public class SongLib extends Application {
 
     @Override
     public void stop() { //Called when application is closed
-
         saveData(); //save data before closing
-
-        System.out.println("Stopping");
+        System.out.println("Saved data and stopping application");
     }
 
-    //FIXME: Seems to work, test some more
     public void saveData(){
-
         //Create file
         File file = new File("src/resources/songs.txt");
         try {
             FileWriter writer = new FileWriter(file);
-            //Save a line to the file for each song
-            for (Song song : controller.songList) { //Save each song to the file
+            for (Song song : controller.songList) {
                 System.out.println("saving song: " + song.name);
                 writer.write(song.toSaveString());
             }
             writer.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("Error saving data... Moving on");
         }
-
     }
 
     public static void main(String[] args) {

@@ -16,7 +16,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
-import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import java.io.File;
@@ -26,8 +25,6 @@ import java.util.*;
 
 public class SongLibController implements Initializable {
     @FXML Label songListLabel;
-
-    FileChooser fileChooser = new FileChooser();
 
     public List<Song> songList = new ArrayList<>(); //Made public to be accessible by saveData command.
 
@@ -100,7 +97,6 @@ public class SongLibController implements Initializable {
 
 
     }
-
 
     @FXML
     protected void onDeleteButtonClick(ActionEvent event){ //TODO: delete song from library
@@ -187,7 +183,6 @@ public class SongLibController implements Initializable {
 
     }
 
-
     //Called when controller is initialized automatically
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -197,18 +192,18 @@ public class SongLibController implements Initializable {
         try {
             Scanner scanner = new Scanner(file);
 
-            while (scanner.hasNextLine()) { //TODO: Lets try to have each line be a song
+            while (scanner.hasNextLine()) {
                 String line = scanner.nextLine();
-                //Split string somehow
+
                 String[] split = line.split("\\|");
                 String songName = split[0];
                 String artistName = split[1];
                 String albumName = split[2];
                 int year = Integer.parseInt(split[3]);
+
                 Song s = new Song(songName, artistName, albumName, year);
                 songList.add(s);
             }
-
 
         } catch (FileNotFoundException e) {
             System.out.println("File not found! Moving on without loading songs.");
