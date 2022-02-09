@@ -57,7 +57,7 @@ public class SongLib extends Application {
             //Save a line to the file for each song
             for (Song song : controller.songList) { //Save each song to the file
                 System.out.println("saving song: " + song.name);
-                writer.write(song.toString()); //FIXME: Not saving the line for some reason!
+                writer.write(song.toSaveString());
             }
             writer.close();
         } catch (IOException e) {

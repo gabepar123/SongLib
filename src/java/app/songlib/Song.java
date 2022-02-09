@@ -21,12 +21,17 @@ public class Song implements Comparable<Song>{
         this.artist = artist.strip();
     }
 
+    //FIXME: changed for now to support loading
     public Song(String name, String artist, String album, int year) {
         this(name, artist);
 
         if (album.contains("|") || year <= 0 || album.length() == 0 ) {
-            throw new IllegalArgumentException("Invalid Input");
+//            throw new IllegalArgumentException("Invalid Input");
+            System.out.println("Invalid Input");
+            this.album = "";
+            this.year = 0;
         }
+
         this.album = album.strip();
         this.year = year;
     }
@@ -38,11 +43,13 @@ public class Song implements Comparable<Song>{
         return this.artist.compareTo(s.artist);
     }
 
-    //FIXME: change format to make loading from file work, possibly "name|artist|album|
-    // Or possibly another different toString if this can't be changed
     @Override
     public String toString() {
         return name + ", By: " + artist;
+    }
+
+    public String toSaveString() {
+        return name + "|" + artist + "|" + album + "|" + year + "\n";
     }
 
 
