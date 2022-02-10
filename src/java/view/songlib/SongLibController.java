@@ -107,6 +107,15 @@ public class SongLibController {
             else
                 s = new Song(songName, artistName, albumName);
 
+            //iterate through songList to check for song with same name and artist
+            for (Song song : songList) {
+                if (song.name.equals(s.name) && song.artist.equals(s.artist)) {
+                    showError("Song already exists");
+                    return;
+                }
+            }
+
+
             songList.add(s);
             //select new song
             songListView.getSelectionModel().select(s);
