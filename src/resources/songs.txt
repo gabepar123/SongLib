@@ -1,2 +1,4 @@
-Hello|Adele|null|0
-Travesuras|someone|null|0
+eq|qwee|eqwe|52
+sad|asd||0
+test|yes||0
+test2|asd||0

@@ -12,9 +12,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
@@ -23,7 +21,7 @@ import java.io.FileNotFoundException;
 import java.net.URL;
 import java.util.*;
 
-public class SongLibController implements Initializable {
+public class SongLibController {
     @FXML Label songListLabel;
 
     public List<Song> songList = new ArrayList<>(); //Made public to be accessible by saveData command.
@@ -53,13 +51,19 @@ public class SongLibController implements Initializable {
 
     Song currSong; // made global to support removal
 
+    Stage stage;
+
     public void start(Stage stage){
-        // TODO load songList from file here
+
+        this.stage = stage;
+        loadSongs();
+
         obsSongList = FXCollections.observableArrayList(songList);
         songListView.setItems(obsSongList);
 
         if (!songList.isEmpty()){
             songListView.getSelectionModel().select(0);
+            currSong = songListView.getSelectionModel().getSelectedItem();
         }
 
         songListView
@@ -72,17 +76,37 @@ public class SongLibController implements Initializable {
 
     }
 
+
+
     //todo Add confirmation message
     //todo check for duplicate names
     @FXML
     protected void onAddButtonClick(ActionEvent event) { //TODO: add song to library
         String songName = songNameTF.getText();
         String artistName = artistNameTF.getText();
+        String albumName = albumNameTF.getText();
+        String yearString = yearNameTF.getText();
+
         songNameTF.clear();
         artistNameTF.clear();
+        albumNameTF.clear();
+        yearNameTF.clear();
+
+        //todo check when i should clear text if they CANCEL
+        if (!confirmAction("Add")){
+            return;
+        }
 
         try {
-            Song s = new Song(songName, artistName);
+            Song s;
+
+            if (yearString.length() != 0) {
+                int year = Integer.parseInt(yearString.strip());
+                s = new Song(songName, artistName, albumName, year);
+            }
+            else
+                s = new Song(songName, artistName, albumName);
+
             songList.add(s);
             //select new song
             songListView.getSelectionModel().select(s);
@@ -90,9 +114,9 @@ public class SongLibController implements Initializable {
 
             updateSongList();
 
-        } catch (IllegalArgumentException e) {
-            System.out.println("Bad Input!");
-            //todo turn this into error popup
+        } catch (Exception e) {
+            System.out.println("Bad Input! on add");
+            showError("Bad input on add!");
         }
 
 
@@ -102,6 +126,17 @@ public class SongLibController implements Initializable {
     protected void onDeleteButtonClick(ActionEvent event){ //TODO: delete song from library
         System.out.println("Delete Button was clicked!");
         //TODO: add error pop up if we try to delete a song when there are none?
+
+        //todo check when i should clear text if they CANCEL
+        if (!confirmAction("Delete")){
+            return;
+        }
+
+        if (currSong == null){
+            System.out.println("No song selected");
+            showError("No Song Selected!");
+            return;
+        }
 
         int currSongIndex = songListView.getSelectionModel().getSelectedIndex();
 
@@ -136,20 +171,40 @@ public class SongLibController implements Initializable {
     protected void onEditButtonClick(ActionEvent event){ //TODO: edit song in library
         System.out.println("Edit Button was clicked!");
 
-        String songName = songNameTF.getText();
-        String artistName = artistNameTF.getText();
-        String albumName = albumNameTF.getText();
-        String yearString = yearNameTF.getText();
 
-        Song s;
-        try { //todo probably just make one constructor call tbh
-            if (albumName.length() == 0 || yearString.length() == 0) {
-                s = new Song(songName, artistName);
-            }
-            else {
-                int year = Integer.parseInt(yearString);
+        String songName = songNameTF.getText();
+
+        String artistName = artistNameTF.getText();
+
+        String albumName = albumNameTF.getText();
+        if (albumName.length() == 0){
+            albumName = currSong.album;
+        }
+
+        String yearString = yearNameTF.getText();
+        if (yearString.length() == 0){
+            yearString = String.valueOf(currSong.year);
+        }
+
+        songNameTF.clear();
+        artistNameTF.clear();
+        albumNameTF.clear();
+        yearNameTF.clear();
+
+        //todo check when i should clear text if they CANCEL
+        if (!confirmAction("Edit")){
+            return;
+        }
+
+        try {
+            Song s;
+
+            if (yearString.length() != 0 && Integer.parseInt(yearString.strip()) != 0) {
+                int year = Integer.parseInt(yearString.strip());
                 s = new Song(songName, artistName, albumName, year);
             }
+            else
+                s = new Song(songName, artistName, albumName);
 
             songList.remove(currSong);
             songList.add(s);
@@ -157,22 +212,27 @@ public class SongLibController implements Initializable {
             currSong = s;
 
             updateSongList();
-        } catch (IllegalArgumentException e) {
-            System.out.println("Bad Input!");
+
+
+        } catch (Exception e) {
+            System.out.println("Bad input on edit!");
+            showError("Bad input on edit!");
             //todo turn this into error popup
         }
 
     }
 
     private void showSelectedItem(Stage stage){
-        System.out.println("here");
         currSong = songListView.getSelectionModel().getSelectedItem();
         if (currSong == null) return; //if there is no songs in the list
         selectedSong.setText(currSong.name);
         selectedArtist.setText(currSong.artist);
-        //selectedAlbum.setText(currSong.album); //todo set year and album
-        //selectedYear.setText(String.valueOf(currSong.year));
-
+        selectedAlbum.setText(currSong.album); //todo set year and album
+        String yearString = String.valueOf(currSong.year);
+        if (yearString.equals("0"))
+            selectedYear.setText("");
+        else
+            selectedYear.setText(yearString);
     }
 
     //call this after adding or removing a song from songList
@@ -183,9 +243,8 @@ public class SongLibController implements Initializable {
 
     }
 
-    //Called when controller is initialized automatically
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
+
+    private void loadSongs() {
         //FIXME: Check if directory is correct!
         File file = new File("src/resources/songs.txt");
 
@@ -200,14 +259,41 @@ public class SongLibController implements Initializable {
                 String artistName = split[1];
                 String albumName = split[2];
                 int year = Integer.parseInt(split[3]);
+                Song s;
+                if (year != 0) {
+                    s = new Song(songName, artistName, albumName, year);
+                }
+                else
+                    s = new Song(songName, artistName, albumName);
 
-                Song s = new Song(songName, artistName, albumName, year);
                 songList.add(s);
             }
 
         } catch (FileNotFoundException e) {
             System.out.println("File not found! Moving on without loading songs.");
         }
+    }
+
+    private boolean confirmAction(String action){
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.initOwner(stage);
+        alert.setTitle("Confirm Action");
+        alert.setHeaderText("Are you sure you want to " + action + " this song?");
+        alert.setContentText("Press OK to confirm.");
+
+        Optional<ButtonType> result = alert.showAndWait();
+        return result.isPresent() && result.get() == ButtonType.OK;
 
     }
+
+    private void showError(String error){
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.initOwner(stage);
+        alert.setTitle("Error!");
+        alert.setHeaderText("Error");
+        alert.setContentText(error);
+        alert.showAndWait();
+
+    }
+
 }
