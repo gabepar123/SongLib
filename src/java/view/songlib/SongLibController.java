@@ -109,7 +109,7 @@ public class SongLibController {
 
             //iterate through songList to check for song with same name and artist
             for (Song song : songList) {
-                if (song.name.equals(s.name) && song.artist.equals(s.artist)) {
+                if (song.compareTo(s) == 0) {
                     showError("Song already exists");
                     return;
                 }
