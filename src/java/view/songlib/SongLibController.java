@@ -40,7 +40,6 @@ public class SongLibController {
     @FXML
     private TextField yearNameTF;
 
-    //todo gonna rename these to selectedAlbumLabel for clarity probably
     @FXML private Label selectedAlbum;
 
     @FXML private Label selectedArtist;
@@ -107,14 +106,7 @@ public class SongLibController {
             else
                 s = new Song(songName, artistName, albumName);
 
-            //iterate through songList to check for song with same name and artist
-            for (Song song : songList) {
-                if (song.compareTo(s) == 0) {
-                    showError("Song already exists");
-                    return;
-                }
-            }
-
+            if (songExists(s)) return;
 
             songList.add(s);
             //select new song
@@ -215,6 +207,8 @@ public class SongLibController {
             else
                 s = new Song(songName, artistName, albumName);
 
+            if (songExists(s)) return;
+
             songList.remove(currSong);
             songList.add(s);
             songListView.getSelectionModel().select(s);
@@ -303,6 +297,16 @@ public class SongLibController {
         alert.setContentText(error);
         alert.showAndWait();
 
+    }
+    private boolean songExists(Song s) {
+        //iterate through songList to check for song with same name and artist
+        for (Song song : songList) {
+            if (song.compareTo(s) == 0) {
+                showError("Song already exists");
+                return true;
+            }
+        }
+        return false;
     }
 
 }
