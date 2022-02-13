@@ -229,13 +229,20 @@ public class SongLibController {
         currSong = songListView.getSelectionModel().getSelectedItem();
         if (currSong == null) return; //if there is no songs in the list
         selectedSong.setText(currSong.name);
+        songNameTF.setText(currSong.name);
         selectedArtist.setText(currSong.artist);
+        artistNameTF.setText(currSong.artist);
         selectedAlbum.setText(currSong.album); //todo set year and album
+        albumNameTF.setText(currSong.album);
         String yearString = String.valueOf(currSong.year);
-        if (yearString.equals("0"))
+        if (yearString.equals("0")) {
             selectedYear.setText("");
-        else
+            yearNameTF.setText("");
+        }
+        else {
             selectedYear.setText(yearString);
+            yearNameTF.setText(yearString);
+        }
     }
 
     //call this after adding or removing a song from songList
@@ -298,6 +305,7 @@ public class SongLibController {
         alert.showAndWait();
 
     }
+
     private boolean songExists(Song s) {
         //iterate through songList to check for song with same name and artist
         for (Song song : songList) {
