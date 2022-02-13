@@ -178,24 +178,24 @@ public class SongLibController {
         String artistName = artistNameTF.getText();
 
         String albumName = albumNameTF.getText();
-        if (albumName.length() == 0){
-            albumName = currSong.album;
-        }
+//        if (albumName.length() == 0){
+//            albumName = currSong.album;
+//        }
 
         String yearString = yearNameTF.getText();
-        if (yearString.length() == 0){
-            yearString = String.valueOf(currSong.year);
-        }
+//        if (yearString.length() == 0){
+//            yearString = String.valueOf(currSong.year);
+//        }
 
-        songNameTF.clear();
-        artistNameTF.clear();
-        albumNameTF.clear();
-        yearNameTF.clear();
+
+
 
         //todo check when i should clear text if they CANCEL
         if (!confirmAction("Edit")){
             return;
         }
+
+
 
         try {
             Song s;
@@ -203,11 +203,21 @@ public class SongLibController {
             if (yearString.length() != 0 && Integer.parseInt(yearString.strip()) != 0) {
                 int year = Integer.parseInt(yearString.strip());
                 s = new Song(songName, artistName, albumName, year);
-            }
-            else
+            } else
                 s = new Song(songName, artistName, albumName);
 
-            if (songExists(s)) return;
+
+            if (!currSong.name.equals(songName) && !currSong.artist.equals(artistName)){
+                if (songExists(s)) return;
+            }
+
+            songNameTF.clear();
+            artistNameTF.clear();
+            albumNameTF.clear();
+            yearNameTF.clear();
+
+
+
 
             songList.remove(currSong);
             songList.add(s);
