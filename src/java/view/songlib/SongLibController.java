@@ -6,19 +6,14 @@ package view.songlib;
 
 import app.songlib.Song;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableArray;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.*;
-import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.net.URL;
 import java.util.*;
 
 public class SongLibController {
@@ -57,13 +52,7 @@ public class SongLibController {
         this.stage = stage;
         loadSongs();
 
-        obsSongList = FXCollections.observableArrayList(songList);
-        songListView.setItems(obsSongList);
-
-        if (!songList.isEmpty()){
-            songListView.getSelectionModel().select(0);
-            currSong = songListView.getSelectionModel().getSelectedItem();
-        }
+        updateSongList();
 
         songListView
                 .getSelectionModel()
@@ -73,25 +62,23 @@ public class SongLibController {
                                 showSelectedItem(stage)
                 );
 
+        if (!songList.isEmpty()){
+            songListView.getSelectionModel().select(0);
+            currSong = songListView.getSelectionModel().getSelectedItem();
+        }
+
+
     }
 
-
-
-    //todo Add confirmation message
-    //todo check for duplicate names
     @FXML
-    protected void onAddButtonClick(ActionEvent event) { //TODO: add song to library
+    protected void onAddButtonClick(ActionEvent event) {
         String songName = songNameTF.getText();
         String artistName = artistNameTF.getText();
         String albumName = albumNameTF.getText();
         String yearString = yearNameTF.getText();
 
-        songNameTF.clear();
-        artistNameTF.clear();
-        albumNameTF.clear();
-        yearNameTF.clear();
 
-        //todo check when i should clear text if they CANCEL
+
         if (!confirmAction("Add")){
             return;
         }
@@ -108,27 +95,33 @@ public class SongLibController {
 
             if (songExists(s)) return;
 
+            songNameTF.clear();
+            artistNameTF.clear();
+            albumNameTF.clear();
+            yearNameTF.clear();
+
             songList.add(s);
             //select new song
             songListView.getSelectionModel().select(s);
             currSong = s;
+
 
             updateSongList();
 
         } catch (Exception e) {
             System.out.println("Bad Input! on add");
             showError("Bad input on add!");
+            songListView.getSelectionModel().select(songListView.getSelectionModel().getSelectedItem());
         }
 
 
     }
 
     @FXML
-    protected void onDeleteButtonClick(ActionEvent event){ //TODO: delete song from library
+    protected void onDeleteButtonClick(ActionEvent event){
         System.out.println("Delete Button was clicked!");
-        //TODO: add error pop up if we try to delete a song when there are none?
 
-        //todo check when i should clear text if they CANCEL
+
         if (!confirmAction("Delete")){
             return;
         }
@@ -147,6 +140,11 @@ public class SongLibController {
         selectedArtist.setText("");
         selectedAlbum.setText("");
         selectedYear.setText("");
+
+        songNameTF.clear();
+        artistNameTF.clear();
+        albumNameTF.clear();
+        yearNameTF.clear();
 
         //update the listView
         updateSongList();
@@ -169,7 +167,7 @@ public class SongLibController {
 
     //check for duplicate names
     @FXML
-    protected void onEditButtonClick(ActionEvent event){ //TODO: edit song in library
+    protected void onEditButtonClick(ActionEvent event){
         System.out.println("Edit Button was clicked!");
 
 
@@ -187,10 +185,6 @@ public class SongLibController {
 //            yearString = String.valueOf(currSong.year);
 //        }
 
-
-
-
-        //todo check when i should clear text if they CANCEL
         if (!confirmAction("Edit")){
             return;
         }
@@ -230,7 +224,6 @@ public class SongLibController {
         } catch (Exception e) {
             System.out.println("Bad input on edit!");
             showError("Bad input on edit!");
-            //todo turn this into error popup
         }
 
     }
@@ -240,10 +233,13 @@ public class SongLibController {
         if (currSong == null) return; //if there is no songs in the list
         selectedSong.setText(currSong.name);
         songNameTF.setText(currSong.name);
+
         selectedArtist.setText(currSong.artist);
         artistNameTF.setText(currSong.artist);
-        selectedAlbum.setText(currSong.album); //todo set year and album
+
+        selectedAlbum.setText(currSong.album);
         albumNameTF.setText(currSong.album);
+
         String yearString = String.valueOf(currSong.year);
         if (yearString.equals("0")) {
             selectedYear.setText("");

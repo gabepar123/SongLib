@@ -2,7 +2,6 @@
 //Mohamed Smires
 
 
-//TODO add names to top of every file
 
 package app.songlib;
 
@@ -10,12 +9,12 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import view.songlib.SongLibController;
 
-import java.io.*;
-import java.util.List;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 
 
 public class SongLib extends Application {
@@ -32,8 +31,9 @@ public class SongLib extends Application {
         controller = fxmlLoader.getController();
         controller.start(stage);
 
-        Scene scene = new Scene(root, 700, 400);
+        Scene scene = new Scene(root);
         stage.setTitle("Song Library App");
+        stage.setResizable(false);
         stage.setScene(scene);
         stage.show();
     }
@@ -41,7 +41,6 @@ public class SongLib extends Application {
     @Override
     public void stop() { //Called when application is closed
         saveData(); //save data before closing
-        System.out.println("Saved data and stopping application");
     }
 
     public void saveData(){
@@ -54,6 +53,7 @@ public class SongLib extends Application {
                 writer.write(song.toSaveString());
             }
             writer.close();
+            System.out.println("Saved data and stopping application");
         } catch (IOException e) {
             System.out.println("Error saving data... Moving on");
         }

@@ -1,5 +1,3 @@
-C'est la vie|Khaled|Sahra|2011
-Hello|Adele|something|2004
-Hiya Hiya|Khaled||0
-eq|qwee|eqwe|52
-sad|asd||0
+apple|me||0
+asdasd|adele||0
+hello|adele||0

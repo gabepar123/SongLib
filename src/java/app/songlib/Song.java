@@ -3,7 +3,6 @@
 
 package app.songlib;
 
-//TODO check how this reacts to empty strings and how JavaFX takes integers for the year
 public class Song implements Comparable<Song> {
 
     public String name;
