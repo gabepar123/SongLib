@@ -16,7 +16,6 @@ public class Song implements Comparable<Song> {
         artist = artist.strip();
 
         if (name.contains("|") || artist.contains("|") || name.length() == 0 || artist.length() == 0){
-            System.out.println("c1");
             throw new IllegalArgumentException("Invalid Input");
         }
 
@@ -32,7 +31,6 @@ public class Song implements Comparable<Song> {
 
         //checks the difference between no album name and an white space album name
         if (album.contains("|") || (tempAlbum.length() == 0 && album.length() != 0)) {
-            System.out.println("c2");
             throw new IllegalArgumentException("Invalid Input");
         }
 
@@ -40,12 +38,10 @@ public class Song implements Comparable<Song> {
 
     }
 
-    //FIXME: changed for now to support loading
     public Song(String name, String artist, String album, int year) {
         this(name, artist, album);
 
         if (year <= 0){
-            System.out.println("c3");
             throw new IllegalArgumentException("Invalid Input");
         }
         this.year = year;

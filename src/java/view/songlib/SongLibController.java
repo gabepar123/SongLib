@@ -194,14 +194,14 @@ public class SongLibController {
         try {
             Song s;
 
-            if (yearString.length() != 0 && Integer.parseInt(yearString.strip()) != 0) {
-                int year = Integer.parseInt(yearString.strip());
+            int year = Integer.parseInt(yearString.strip());
+            if (yearString.length() != 0 ) {
                 s = new Song(songName, artistName, albumName, year);
-            } else
+            } else {
                 s = new Song(songName, artistName, albumName);
+            }
 
-
-            if (!currSong.name.equals(songName) && !currSong.artist.equals(artistName)){
+            if (currSong.compareTo(s) != 0){
                 if (songExists(s)) return;
             }
 
@@ -223,12 +223,15 @@ public class SongLibController {
 
         } catch (Exception e) {
             System.out.println("Bad input on edit!");
+            showSelectedItem(stage);
             showError("Bad input on edit!");
         }
 
     }
 
     private void showSelectedItem(Stage stage){
+
+
         currSong = songListView.getSelectionModel().getSelectedItem();
         if (currSong == null) return; //if there is no songs in the list
         selectedSong.setText(currSong.name);
