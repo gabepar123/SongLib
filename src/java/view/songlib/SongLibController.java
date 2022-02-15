@@ -194,8 +194,8 @@ public class SongLibController {
         try {
             Song s;
 
-            int year = Integer.parseInt(yearString.strip());
             if (yearString.length() != 0 ) {
+                int year = Integer.parseInt(yearString.strip());
                 s = new Song(songName, artistName, albumName, year);
             } else {
                 s = new Song(songName, artistName, albumName);
